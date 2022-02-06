@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
         primaryColor: const Color(0xff075E54),
+        errorColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),

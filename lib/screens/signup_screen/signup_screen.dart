@@ -255,19 +255,16 @@ class SignupScreen extends StatelessWidget {
                     );
                   } else {
                     return SizedBox(
-                      height: 60,
+                      height: MediaQuery.of(context).size.height / 7.5,
                       child: InkWell(
                         onTap: store.setInvalidSendPressed,
                         child: Container(
-                          height: MediaQuery.of(context).size.height / 9,
                           padding: const EdgeInsets.only(
                             bottom: 32,
                           ),
                           child: Observer(builder: (_) {
                             return ElevatedButton(
-                              onPressed: store.sendPressedValid != null
-                                  ? store.sendPressedValid!()
-                                  : null,
+                              onPressed: store.sendPressedValid as Function()?,
                               style: ElevatedButton.styleFrom(
                                 shape: const StadiumBorder(),
                                 primary: Colors.teal,
