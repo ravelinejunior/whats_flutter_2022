@@ -46,7 +46,8 @@ abstract class _SignupStoreBase with Store {
   String? age = "0";
   @action
   void setAge(String value) => age = value;
-  bool get ageValid => age != null && age!.length >= 2 && age!.isNotEmpty;
+  bool get ageValid =>
+      age != null && age!.length > 1 && age!.length < 4 && age!.isNotEmpty;
   @computed
   String? get ageError {
     if (!showErrors || ageValid) {
