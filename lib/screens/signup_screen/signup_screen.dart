@@ -3,12 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobx/mobx.dart';
 import 'package:whats_flutter/screens/home_screen/home_screen.dart';
+import 'package:whats_flutter/screens/main_screen/main_screen.dart';
 import 'package:whats_flutter/stores/signup_store.dart';
 
-class SignupScreen extends StatelessWidget {
-  SignupScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final store = SignupStore();
+
+  @override
+  void initState() {
+    super.initState();
+    when((_) => store.successSignup, () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => MainScreen(),
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

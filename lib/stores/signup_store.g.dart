@@ -172,6 +172,21 @@ mixin _$SignupStore on _SignupStoreBase, Store {
     });
   }
 
+  final _$successSignupAtom = Atom(name: '_SignupStoreBase.successSignup');
+
+  @override
+  bool get successSignup {
+    _$successSignupAtom.reportRead();
+    return super.successSignup;
+  }
+
+  @override
+  set successSignup(bool value) {
+    _$successSignupAtom.reportWrite(value, super.successSignup, () {
+      super.successSignup = value;
+    });
+  }
+
   final _$_signupUserAsyncAction = AsyncAction('_SignupStoreBase._signupUser');
 
   @override
@@ -281,6 +296,7 @@ phone: ${phone},
 password: ${password},
 confirmPassword: ${confirmPassword},
 showErrors: ${showErrors},
+successSignup: ${successSignup},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 ageError: ${ageError},

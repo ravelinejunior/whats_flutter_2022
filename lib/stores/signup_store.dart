@@ -111,4 +111,7 @@ abstract class _SignupStoreBase with Store {
 
   @action
   bool setInvalidSendPressed() => showErrors = true;
+
+  @observable
+  bool successSignup = false;
 }
