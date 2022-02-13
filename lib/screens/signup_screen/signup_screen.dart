@@ -22,9 +22,10 @@ class _SignupScreenState extends State<SignupScreen> {
   void initState() {
     super.initState();
     when((_) => store.successSignup, () {
+      Navigator.of(context).pop();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => MainScreen(),
+          builder: (_) => const MainScreen(),
         ),
       );
     });
@@ -270,8 +271,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 Observer(builder: (_) {
                   if (store.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+                    return const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
                     );
                   } else {
                     return SizedBox(
