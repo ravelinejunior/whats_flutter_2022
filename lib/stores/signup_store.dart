@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
@@ -130,20 +129,19 @@ abstract class _SignupStoreBase with Store {
       )
           .then((userCredential) async {
         if (userCredential.user != null) {
-          await Future.delayed(const Duration(seconds: 1)).then((value) {
-            final database = FirebaseDatabase.instance;
-            final userMap = user.toMap();
-            final userRef = database.ref('Users');
+          final database = FirebaseDatabase.instance;
+          final userMap = user.toMap();
+          final userRef = database.ref('Users');
 
-            userRef.push().set(
-                  userMap,
-                );
-            successSignup = true;
-            loading = false;
-          });
-        } else {
+          userRef.push().set(
+                userMap,
+              );
+          successSignup = true;
           loading = false;
         }
+        await Future.delayed(const Duration(seconds: 2)).then((value) {
+          loading = false;
+        });
       });
     } catch (e) {
       debugPrintStack();

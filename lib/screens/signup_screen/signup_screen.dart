@@ -312,7 +312,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     onTap: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (_) => const HomeScreen(),
+                          builder: (_) => HomeScreen(),
                         ),
                       );
 

@@ -1,9 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobx/mobx.dart';
+import 'package:whats_flutter/screens/main_screen/main_screen.dart';
 import 'package:whats_flutter/screens/signup_screen/signup_screen.dart';
+import 'package:whats_flutter/stores/login_store.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+  final loginStore = LoginStore();
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    when(
+      (_) => widget.loginStore.successfulLogin,
+      () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const MainScreen(),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,80 +63,115 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: 16,
                   ),
-                  child: TextFormField(
-                    autofocus: false,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    style: GoogleFonts.lato(fontSize: 16),
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
-                        ),
-                        hintText: 'E-mail',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: const BorderSide(
-                            color: Colors.white,
+                  child: Observer(
+                    builder: (_) {
+                      return TextFormField(
+                        enabled: !widget.loginStore.loading,
+                        autofocus: false,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        style: GoogleFonts.lato(fontSize: 16),
+                        decoration: InputDecoration(
+                          errorText: widget.loginStore.emailError,
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
                           ),
-                        )),
+                          hintText: 'E-mail',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        onChanged: widget.loginStore.setEmail,
+                      );
+                    },
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 32,
                   ),
-                  child: TextFormField(
-                    autofocus: false,
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    style: GoogleFonts.lato(fontSize: 16),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      hintText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: const BorderSide(
-                          color: Colors.white,
-                          style: BorderStyle.solid,
+                  child: Observer(builder: (_) {
+                    return TextFormField(
+                      autofocus: false,
+                      enabled: !widget.loginStore.loading,
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      style: GoogleFonts.lato(fontSize: 16),
+                      decoration: InputDecoration(
+                        errorText: widget.loginStore.passwordError,
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                        hintText: 'Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(
+                            color: Colors.white,
+                            style: BorderStyle.solid,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                      onChanged: widget.loginStore.setPassword,
+                    );
+                  }),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 9,
-                  padding: const EdgeInsets.only(
-                    bottom: 32,
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      primary: Colors.teal,
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                Observer(builder: (_) {
+                  if (widget.loginStore.loading) {
+                    return const Padding(
+                        padding: EdgeInsets.all(32),
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(
+                            valueColor: AlwaysStoppedAnimation(
+                              Colors.white,
+                            ),
+                          ),
+                        ));
+                  } else {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height / 9,
+                      child: InkWell(
+                        onTap: widget.loginStore.setInvalidSendPressed,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                            bottom: 32,
+                          ),
+                          child: Observer(builder: (_) {
+                            return ElevatedButton(
+                              onPressed: widget.loginStore.sendPressedValid
+                                  as Function()?,
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Colors.teal,
+                              ),
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    );
+                  }
+                }),
                 Center(
                   child: InkWell(
                     splashColor: Colors.tealAccent,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => SignupScreen(),
+                        builder: (_) => const SignupScreen(),
                       ),
                     ),
                     child: SizedBox(
