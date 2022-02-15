@@ -133,7 +133,7 @@ abstract class _SignupStoreBase with Store {
           final userMap = user.toMap();
           final userRef = database.ref('Users');
 
-          userRef.push().set(
+          userRef.child(userCredential.user!.uid).set(
                 userMap,
               );
           successSignup = true;

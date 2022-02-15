@@ -22,8 +22,10 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: const Color(0xff075E54),
           centerTitle: true,
-          titleTextStyle: GoogleFonts.montserratAlternates(
+          titleTextStyle: GoogleFonts.montserrat(
+            fontSize: 16,
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
           elevation: 0,
         ),
