@@ -60,4 +60,10 @@ class _MainScreenState extends State<MainScreen>
     _tabController.dispose();
     super.dispose();
   }
+
+  @override
+  void deactivate() {
+    mainStore.userStream.cancel();
+    super.deactivate();
+  }
 }

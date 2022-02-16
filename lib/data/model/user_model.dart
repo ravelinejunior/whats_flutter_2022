@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 class UserModel {
-  String? name = "";
-  String? email = "";
-  String? age = "";
-  String? phone = "";
-  String? password = "";
-  String? confirmPassword = "";
+  String? name;
+  String? email;
+  String? age;
+  String? phone;
+  String? password;
+  String? confirmPassword;
   UserModel({
-    this.name,
-    this.email,
-    this.age,
-    this.phone,
-    this.password,
-    this.confirmPassword,
+    this.name = "",
+    this.email = "",
+    this.age = "",
+    this.phone = "",
+    this.password = "",
+    this.confirmPassword = "",
   });
 
   UserModel copyWith({
@@ -63,7 +63,7 @@ class UserModel {
 
   @override
   String toString() {
-    return '{name: $name, email: $email, age: $age, phone: $phone, password: $password, confirmPassword: $confirmPassword';
+    return 'name: $name\nemail: $email\nage: $age\nphone: $phone\npassword: $password\nconfirmPassword: $confirmPassword';
   }
 
   @override

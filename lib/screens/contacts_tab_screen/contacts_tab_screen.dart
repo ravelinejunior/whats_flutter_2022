@@ -5,8 +5,6 @@ class ContactsTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Contacts'),
-    );
+    return Container();
   }
 }
