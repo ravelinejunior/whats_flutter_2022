@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobx/mobx.dart';
 import 'package:whats_flutter/screens/contacts_tab_screen/contacts_tab_screen.dart';
+import 'package:whats_flutter/screens/home_screen/home_screen.dart';
 import 'package:whats_flutter/screens/talks_tab_screen/talks_tab_screen.dart';
 import 'package:whats_flutter/stores/main_store.dart';
 
@@ -15,10 +17,25 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final mainStore = MainStore();
+  final itemsMenu = ["Settings", "Signout"];
 
   @override
   void initState() {
     super.initState();
+
+    when(
+      (_) => !mainStore.isUserLogged,
+      () {
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => HomeScreen(),
+            ),
+          );
+        });
+      },
+    );
+
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -44,10 +61,25 @@ class _MainScreenState extends State<MainScreen>
             ),
           ],
         ),
+        actions: [
+          PopupMenuButton(
+            onSelected: _chooseMenuItem,
+            itemBuilder: (_) => itemsMenu
+                .map(
+                  (item) => PopupMenuItem(
+                    value: item,
+                    child: Text(
+                      item,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
       ),
       body: TabBarView(
         controller: _tabController,
-        children: const [
+        children: [
           TalksTabScreen(),
           ContactsTabScreen(),
         ],
@@ -61,9 +93,16 @@ class _MainScreenState extends State<MainScreen>
     super.dispose();
   }
 
-  @override
-  void deactivate() {
-    mainStore.userStream.cancel();
-    super.deactivate();
+  _chooseMenuItem(String chosenItem) {
+    switch (chosenItem) {
+      case 'Settings':
+        break;
+
+      case 'Signout':
+        mainStore.signoutUser();
+        break;
+
+      default:
+    }
   }
 }

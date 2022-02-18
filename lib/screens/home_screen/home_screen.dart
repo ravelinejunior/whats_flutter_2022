@@ -21,11 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
     when(
       (_) => widget.loginStore.successfulLogin,
       () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const MainScreen(),
-          ),
-        );
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => const MainScreen(),
+            ),
+          );
+        });
       },
     );
   }

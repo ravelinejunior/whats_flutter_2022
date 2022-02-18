@@ -20,6 +20,9 @@ abstract class _MainStore with Store {
   @observable
   List<UserModel> userList = [];
 
+  @observable
+  bool isUserLogged = true;
+
   late StreamSubscription userStream;
 
   _MainStore() {
@@ -40,7 +43,6 @@ abstract class _MainStore with Store {
             age: snapshot.child('age').value.toString(),
             phone: snapshot.child('phone').value.toString(),
           );
-          debugPrint(currentUser.toString());
         },
       );
     }
@@ -53,10 +55,15 @@ abstract class _MainStore with Store {
         Map<String, dynamic> maps =
             Map.from(event.snapshot.value as Map<dynamic, dynamic>);
 
-        maps.values.forEach((value) {
+        for (final value in maps.values) {
           userList.add(UserModel.fromMap(Map.from(value)));
-        });
+        }
       },
     );
+  }
+
+  @action
+  Future<void> signoutUser() async {
+    await _auth.signOut().then((value) => isUserLogged = false);
   }
 }
