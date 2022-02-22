@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whats_flutter/screens/home_screen/home_screen.dart';
+import 'package:whats_flutter/utils/route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,8 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xff075E54),
         errorColor: Colors.white,
       ),
+      initialRoute: '/home',
+      onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );

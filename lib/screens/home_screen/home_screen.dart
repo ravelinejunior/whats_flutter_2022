@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
-import 'package:whats_flutter/screens/main_screen/main_screen.dart';
-import 'package:whats_flutter/screens/signup_screen/signup_screen.dart';
+
 import 'package:whats_flutter/stores/login_store.dart';
+import 'package:whats_flutter/utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -22,11 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
       (_) => widget.loginStore.successfulLogin,
       () {
         Future.delayed(Duration.zero, () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const MainScreen(),
-            ),
-          );
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(MAIN_ROUTE_KEY, (_) => false);
         });
       },
     );
@@ -171,11 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Center(
                   child: InkWell(
                     splashColor: Colors.tealAccent,
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const SignupScreen(),
-                      ),
-                    ),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(SIGNUP_ROUTE_KEY),
                     child: SizedBox(
                       height: 60,
                       child: Text(

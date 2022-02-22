@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 import 'package:whats_flutter/screens/home_screen/home_screen.dart';
 import 'package:whats_flutter/screens/main_screen/main_screen.dart';
 import 'package:whats_flutter/stores/signup_store.dart';
+import 'package:whats_flutter/utils/constants.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -22,12 +23,8 @@ class _SignupScreenState extends State<SignupScreen> {
   void initState() {
     super.initState();
     when((_) => store.successSignup, () {
-      Navigator.of(context).pop();
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const MainScreen(),
-        ),
-      );
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(MAIN_ROUTE_KEY, (_) => false);
     });
   }
 

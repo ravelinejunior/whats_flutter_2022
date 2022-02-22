@@ -5,6 +5,7 @@ import 'package:whats_flutter/screens/contacts_tab_screen/contacts_tab_screen.da
 import 'package:whats_flutter/screens/home_screen/home_screen.dart';
 import 'package:whats_flutter/screens/talks_tab_screen/talks_tab_screen.dart';
 import 'package:whats_flutter/stores/main_store.dart';
+import 'package:whats_flutter/utils/constants.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,11 +28,8 @@ class _MainScreenState extends State<MainScreen>
       (_) => !mainStore.isUserLogged,
       () {
         Future.delayed(Duration.zero, () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => HomeScreen(),
-            ),
-          );
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(HOME_ROUTE_KEY, (_) => false);
         });
       },
     );
